@@ -1,0 +1,14 @@
+[package]
+name = "nzxt-lightctl"
+version = "0.1.0"
+edition = "2024"
+description = "Linux LED controller for NZXT Function keyboards"
+license = "MIT"
+repository = "https://github.com/dyllybot/nzxt-lightctl"
+keywords = ["nzxt", "keyboard", "rgb", "led", "hid"]
+categories = ["command-line-utilities", "hardware-support"]
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
