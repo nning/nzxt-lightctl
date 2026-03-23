@@ -12,3 +12,4 @@ categories = ["command-line-utilities", "hardware-support"]
 clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
+libc = "0.2"
