@@ -21,7 +21,7 @@ Linux CLI tool to control LEDs on NZXT Function keyboards via HID output reports
 - Report ID: `0x43`, 64 bytes total (1 byte report ID + 63 bytes data)
 - Init: 2 packets, then 4 "color burst" packets to set all zones
 - 1ms delay between packets
-- Protocol derived from SignalRGB plugins (see /tmp/nzxt_tkl_signalrgb.js for reference)
+- Protocol derived from [SignalRGB plugins](https://gitlab.com/signalrgb/signal-plugins/-/tree/master/Plugins/Nzxt/Peripheral%20Protocol)
 
 ## Commands
 

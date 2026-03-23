@@ -17,13 +17,12 @@ Linux LED controller for NZXT Function keyboards. Single binary, no runtime depe
 
 All devices share USB VID `1E71` (NZXT).
 
+## Prerequisites
+
+- Linux (uses `/dev/hidraw` and systemd/udev)
+- [Rust toolchain](https://rustup.rs/) (for building)
+
 ## Install
-
-```bash
-cargo install nzxt-lightctl
-```
-
-Or build from source:
 
 ```bash
 git clone https://github.com/dyllybot/nzxt-lightctl.git
@@ -34,7 +33,7 @@ sudo cp target/release/nzxt-lightctl /usr/local/bin/
 
 ## Setup
 
-Install the udev rule (device permissions) and systemd service (auto-apply on plug-in):
+Install the udev rule (device permissions) and systemd service (auto-apply your saved color on plug-in):
 
 ```bash
 sudo nzxt-lightctl install-service
@@ -97,11 +96,21 @@ red, green, blue, white, purple, cyan, yellow, orange, pink, magenta, teal, lime
 | nav-cluster | Ins, Del, PgUp, PgDn |
 | arrows | Arrow keys area |
 
+Full-size variants add `numpad-upper` and `numpad-lower` zones.
+
 ## How It Works
 
 NZXT Function keyboards expose a vendor-specific HID interface for LED control. This tool sends HID output reports (report ID `0x43`, 64-byte packets) to the `/dev/hidraw` device on interface 1.
 
 The keyboard has **zone-based** LED control (not per-key). Each zone covers a row or region of the keyboard. The protocol was reverse-engineered from [SignalRGB plugins](https://gitlab.com/signalrgb/signal-plugins/-/tree/master/Plugins/Nzxt/Peripheral%20Protocol).
+
+### Config
+
+Settings are stored at `~/.config/nzxt-lightctl/config.toml`. The systemd service reads this file to restore your LED state when the keyboard is plugged in.
+
+## Contributing
+
+If you have a different NZXT Function variant (ISO, Full-size, MiniTKL) and can test it, reports and PRs are welcome. The protocol is identical across variants — only zone counts and minor mapping bytes differ.
 
 ## License
 

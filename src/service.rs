@@ -20,7 +20,7 @@ ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2105"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2108", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 "#;
 
-fn systemd_service(binary_path: &str) -> String {
+fn systemd_service(binary_path: &str, user_home: &str) -> String {
     format!(
         r#"[Unit]
 Description=NZXT Function Keyboard LED Controller
@@ -28,6 +28,7 @@ After=sys-subsystem-hidraw.target
 
 [Service]
 Type=oneshot
+Environment=HOME={user_home}
 ExecStartPre=/bin/sleep 1
 ExecStart={binary_path} apply
 RemainAfterExit=no
@@ -66,15 +67,36 @@ fn run_cmd(cmd: &str, args: &[&str]) -> io::Result<()> {
     Ok(())
 }
 
+/// Detect the real user's home directory (handles sudo).
+fn real_user_home() -> io::Result<String> {
+    // SUDO_USER is set when running under sudo
+    if let Ok(sudo_user) = std::env::var("SUDO_USER") {
+        // Look up the user's home directory from passwd
+        let output = Command::new("getent").args(["passwd", &sudo_user]).output()?;
+        if output.status.success() {
+            let line = String::from_utf8_lossy(&output.stdout);
+            // passwd format: user:x:uid:gid:gecos:home:shell
+            if let Some(home) = line.split(':').nth(5) {
+                return Ok(home.to_string());
+            }
+        }
+    }
+    // Fallback to HOME env var
+    std::env::var("HOME").map_err(|_| {
+        io::Error::new(io::ErrorKind::Other, "Cannot determine user home directory")
+    })
+}
+
 pub fn install() -> io::Result<()> {
     check_root()?;
     let binary = find_binary()?;
+    let home = real_user_home()?;
 
     fs::write(UDEV_RULE_PATH, UDEV_RULE)?;
     eprintln!("Installed {UDEV_RULE_PATH}");
 
-    fs::write(SYSTEMD_SERVICE_PATH, systemd_service(&binary))?;
-    eprintln!("Installed {SYSTEMD_SERVICE_PATH}");
+    fs::write(SYSTEMD_SERVICE_PATH, systemd_service(&binary, &home))?;
+    eprintln!("Installed {SYSTEMD_SERVICE_PATH} (HOME={home})");
 
     run_cmd("systemctl", &["daemon-reload"])?;
     run_cmd("udevadm", &["control", "--reload-rules"])?;
