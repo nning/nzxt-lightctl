@@ -2,9 +2,11 @@
 
 Linux LED controller for NZXT Function keyboards. Single binary, no runtime dependencies.
 
-> **Status**: Works with NZXT Function TKL ANSI. Other variants (ISO, Full-size, MiniTKL) are defined but untested.
+> **Status**: Works with NZXT Function TKL ANSI and Function 2 MiniTKL ISO (German layout). Other variants are defined but untested.
 
 ## Supported Devices
+
+### NZXT Function (2022)
 
 | Keyboard | USB PID | Zones | Status |
 |---|---|---|---|
@@ -14,6 +16,16 @@ Linux LED controller for NZXT Function keyboards. Single binary, no runtime depe
 | Function Full-size (ISO) | `2106` | 10 | Untested |
 | Function MiniTKL (ANSI) | `2105` | 8 | Untested |
 | Function MiniTKL (ISO) | `2108` | 8 | Untested |
+
+### NZXT Function 2 (2023–2024)
+
+| Keyboard | USB PID | Zones | Status |
+|---|---|---|---|
+| Function 2 MiniTKL (ISO) | `2137` | 8 | Tested |
+| Function 2 MiniTKL (ANSI) | unknown | 8 | PID not yet observed |
+| Function 2 Full-size (ANSI/ISO) | unknown | 10 | PID not yet observed |
+
+The Function 2 uses the same HID transport as the original Function (interface 1, report ID `0x43`, 64-byte reports) and is compatible with the same zone protocol.
 
 All devices share USB VID `1E71` (NZXT).
 

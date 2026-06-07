@@ -62,6 +62,7 @@ const FULL_ZONE_LABELS: &[&str] = &[
 ];
 
 pub const VARIANTS: &[Variant] = &[
+    // ── NZXT Function (original, 2022) ────────────────────────────────────────
     Variant {
         name: "Function TKL (ANSI)",
         pid: 0x2104,
@@ -105,6 +106,21 @@ pub const VARIANTS: &[Variant] = &[
     Variant {
         name: "Function MiniTKL (ISO)",
         pid: 0x2108,
+        zone_count: 8,
+        zone_names: TKL_ZONE_NAMES,
+        zone_labels: TKL_ZONE_LABELS,
+        mapping_byte: 0x03,
+    },
+    // ── NZXT Function 2 (2023–2024) ───────────────────────────────────────────
+    // PID 0x2137: confirmed on Function 2 MiniTKL ISO (German layout, bcdDevice 1.03).
+    // The Function 2 exposes 3 HID interfaces; the LED control interface is
+    // still interface 1 with report ID 0x43 / 64-byte reports — same as Function 1.
+    //
+    // ANSI variant PID: unknown (add here once observed; likely 0x213x or similar).
+    // Full-size variant PIDs: unknown (add here once observed).
+    Variant {
+        name: "Function 2 MiniTKL (ISO)",
+        pid: 0x2137,
         zone_count: 8,
         zone_names: TKL_ZONE_NAMES,
         zone_labels: TKL_ZONE_LABELS,

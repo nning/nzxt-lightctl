@@ -12,12 +12,14 @@ SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e71", ATTRS{idProduct}=="2103", MODE="06
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e71", ATTRS{idProduct}=="2106", MODE="0666"
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e71", ATTRS{idProduct}=="2105", MODE="0666"
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e71", ATTRS{idProduct}=="2108", MODE="0666"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e71", ATTRS{idProduct}=="2137", MODE="0666"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2104", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2107", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2103", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2106", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2105", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2108", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1e71", ATTR{idProduct}=="2137", TAG+="systemd", ENV{SYSTEMD_WANTS}="nzxt-lightctl.service"
 "#;
 
 fn systemd_service(binary_path: &str, user_home: &str) -> String {
